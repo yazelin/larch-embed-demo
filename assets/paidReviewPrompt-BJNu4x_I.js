@@ -1,0 +1,1 @@
+import{h as t}from"./paidBasics-B6aIeCEs.js";const a="larch:paid-review-prompt";function o(i,n){if(!i?.id||!n.id||!t(i))return;const e={projectId:i.id,projectName:i.name,target:n};window.dispatchEvent(new CustomEvent(a,{detail:e}))}export{a as P,o as p};

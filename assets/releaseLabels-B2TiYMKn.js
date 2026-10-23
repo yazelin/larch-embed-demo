@@ -1,0 +1,1 @@
+function t(r,e){const n=Date.parse(r||"");return Number.isFinite(n)?new Intl.DateTimeFormat(e?"zh-TW":"en-US",{year:"numeric",month:"long",day:"numeric"}).format(n):""}function a(r){const e=String(r??"").trim();return e?/^v/i.test(e)?e:`v${e}`:""}export{t as a,a as r};

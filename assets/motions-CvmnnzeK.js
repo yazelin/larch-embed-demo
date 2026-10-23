@@ -1,0 +1,1 @@
+const n=[{id:"none",name:"不動",nameEn:"Still"},{id:"breathe",name:"呼吸",nameEn:"Breathe"},{id:"hop",name:"蹦蹦跳",nameEn:"Hop"},{id:"waddle",name:"搖搖擺擺",nameEn:"Waddle"},{id:"float",name:"漂浮",nameEn:"Float"},{id:"spin",name:"旋轉",nameEn:"Spin"},{id:"jelly",name:"果凍晃動",nameEn:"Jelly"},{id:"dance",name:"跳舞",nameEn:"Dance"}];export{n as M};

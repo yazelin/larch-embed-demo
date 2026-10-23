@@ -1,0 +1,1 @@
+import{dr as s}from"./store-qwZaBvKC.js";function n(i,t){const o=r=>s(r.visibilityCondition,t);return{...i,actors:i.actors.filter(o),props:i.props?.filter(o),texts:i.texts?.filter(o),videos:i.videos?.filter(o)}}export{n as v};

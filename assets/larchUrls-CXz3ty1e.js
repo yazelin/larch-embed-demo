@@ -1,0 +1,1 @@
+const a="https://larch.ink",c=new Set(["larch.ink","www.larch.ink","larch.yapiflow.com"]);function e(n){const r=String(n||"").trim().replace(/\/+$/,"");try{const t=new URL(r);return c.has(t.hostname.toLowerCase())?a:t.origin}catch{return r}}export{a as L,e as l};
