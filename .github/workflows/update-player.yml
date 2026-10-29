@@ -1,0 +1,59 @@
+name: Update Larch Player & Build
+
+on:
+  schedule:
+    - cron: '0 3 * * 1' # 每週一 UTC 03:00 (台灣時間 11:00) 自動檢查
+  workflow_dispatch:
+    inputs:
+      force:
+        description: '強制重新抓取最新版本'
+        required: false
+        type: boolean
+        default: false
+  push:
+    branches:
+      - main
+    paths:
+      - 'src/**'
+      - 'scripts/**'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: "player-update"
+  cancel-in-progress: false
+
+jobs:
+  update-player:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Check & Update Player Engine
+        run: |
+          if [ "${{ inputs.force }}" = "true" ]; then
+            python3 scripts/build.py --force
+          else
+            python3 scripts/build.py --update
+          fi
+
+      - name: Commit & Push if updated
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add -A
+          if git diff --staged --quiet; then
+            echo "⚡ 沒有檔案變更，略過 commit。"
+          else
+            git commit -m "chore(player): auto-update Larch player & rebuild static assets"
+            git push origin main
+          fi

@@ -1,0 +1,1 @@
+function u(r,s,i,a=()=>!0,m=null){let e;try{e=r.compile(s,i,m)}catch{return Promise.resolve()}const l=r.properties,p=performance.now();return new Promise(o=>{const c=()=>{if(!a()||performance.now()-p>2e4){o();return}for(const t of[...e])try{const n=l.get(t).currentProgram;(!n||n.isReady())&&e.delete(t)}catch{e.delete(t)}e.size?setTimeout(c,10):o()};c()})}export{u as c};
