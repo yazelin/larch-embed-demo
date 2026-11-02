@@ -1,0 +1,1 @@
+import{g as t}from"./index-CpUcZcaR.js";const e=[["rect",{width:"18",height:"18",x:"3",y:"3",rx:"2",key:"afitv7"}],["path",{d:"M9 3v18",key:"fh3hqa"}]],i=t("panel-left",e);const a=[["rect",{width:"18",height:"18",x:"3",y:"3",rx:"2",key:"afitv7"}],["path",{d:"M15 3v18",key:"14nvp0"}]],n=t("panel-right",a);export{i as P,n as a};

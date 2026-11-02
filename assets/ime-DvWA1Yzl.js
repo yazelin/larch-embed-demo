@@ -1,0 +1,1 @@
+function t(n){const i="nativeEvent"in n?n.nativeEvent:n;return i.isComposing||i.keyCode===229}function o(n){return n.key==="Enter"&&!t(n)}function r(n){n.key==="Enter"&&t(n)&&n.preventDefault()}export{o as a,r as g,t as i};

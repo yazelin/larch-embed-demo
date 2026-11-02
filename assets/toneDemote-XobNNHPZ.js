@@ -1,0 +1,1 @@
+const n=["post","comment","game","devlog"],s={post:"茶館貼文",comment:"留言",game:"作品",devlog:"開發日誌"},m={mana:"Mana",admin:"管理員",ai:"AI 建議"},T=.3;function i(a,o,t){if(!a)return 0;const e=a.get(o),r=a.get(t);return e!==void 0&&r!==void 0?e-r:e!==void 0?-1:r!==void 0?1:0}const E=a=>Array.isArray(a)?new Map(a.map((o,t)=>[o,t])):void 0;export{T,i as a,n as b,s as c,m as d,E as m};
