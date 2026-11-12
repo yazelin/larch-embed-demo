@@ -9,8 +9,8 @@
 
 ## 實機展示 (Live Demo)
 
-- 🌐 **獨立 GitHub Pages 遊戲站點**：[https://yazelin.github.io/larch-embed-demo/](https://yazelin.github.io/larch-embed-demo/)
-- 🎮 **Larch 平台線上全螢幕內嵌體驗**：[點此預覽 Larch 專案](https://larch.ink/preview/eyJwcm9qZWN0SWQiOiJwcm9qZWN0LTMwYmE3Y2NlLTBiYzUtNGQ5YS1hZDc5LTNkZjU3MWIzYmMxOSIsImtleUlkIjoiM2VlODYxOGYtNzliNS00OGQxLTg0MzMtY2M2YzVjODc2ODI1IiwiZXhwIjoxNzkzMzkzNzI1NjE1fQ.G3BVjxlwvur4TEklevuSYWJ8gONK2OIykuKfm0yFFgQ)
+- **獨立 GitHub Pages 遊戲站點**：[https://yazelin.github.io/larch-embed-demo/](https://yazelin.github.io/larch-embed-demo/)
+- **Larch 平台線上全螢幕內嵌體驗**：[點此預覽 Larch 專案](https://larch.ink/preview/eyJwcm9qZWN0SWQiOiJwcm9qZWN0LTMwYmE3Y2NlLTBiYzUtNGQ5YS1hZDc5LTNkZjU3MWIzYmMxOSIsImtleUlkIjoiM2VlODYxOGYtNzliNS00OGQxLTg0MzMtY2M2YzVjODc2ODI1IiwiZXhwIjoxNzkzMzkzNzI1NjE1fQ.G3BVjxlwvur4TEklevuSYWJ8gONK2OIykuKfm0yFFgQ)
 
 ---
 
@@ -29,14 +29,15 @@ Larch 平台對於專案 JSON 檔案大小及雲端素材上傳設有容量上�
 
 ## 特性與亮點
 
-- 🔄 **GitHub Actions 全自動同步官方引擎**：
+- **GitHub Actions 全自動同步官方引擎**：
   內建 `.github/workflows/update-player.yml`，定時追蹤 `larch.ink` 官方最新前端引擎，一有更新自動抓取、修補並重新建置發布，免人工維護。
-- 🛠️ **四重沙盒與子目錄補丁**：
+- 同步器會對 HTTP 5xx、429、逾時與連線錯誤最多嘗試 4 次，等待時間依序為 2、5、15 秒。HTTP 404 不重試；必要資源重試後仍失敗時，快取不會更新。
+- **四重沙盒與子目錄補丁**：
   - **Storage Polyfill**：注入純記憶體 Storage，解決 iframe 沙盒環境下的 `SecurityError`。
   - **動態 Base 路徑**：自動修補 Vite Chunk 動態載入，支援任意 GitHub Pages 倉庫子目錄。
   - **SPA 路由直通**：自動繞過官方首頁行銷頁，直達遊戲播放器。
   - **選擇卡型別相容**：容錯轉換選項物件與字串格式，杜絕播放器執行階段異常。
-- 🤖 **AI Ready (內建 SKILL.md)**：
+- **AI Ready（內建 SKILL.md）**：
   提供完整的 [`SKILL.md`](SKILL.md) 規範與操作指南，讓任何 AI 助理（Claude, Gemini, Codex, Antigravity）都能讀取本 repo，為其他大專案自動建立獨立的 GitHub Pages 部署。
 
 ---
