@@ -10,6 +10,7 @@ import urllib.error
 import urllib.request
 
 BASE = 'https://larch.ink'
+RETRY_DELAYS = (2, 5, 15)
 SFX = ['rain', 'thunder', 'wind', 'waves', 'fire', 'footsteps', 'knock', 'whoosh', 'sting', 'heartbeat', 'chime']
 REF = re.compile(r'(?:/?assets/|\./)([A-Za-z0-9_\-]+(?:\.[A-Za-z0-9_\-]+)*'
                  r'\.(?:js|mjs|css|woff2?|ttf|otf|png|svg|webp|jpe?g|gif|wasm|json|mp3))')
@@ -33,20 +34,45 @@ def get_version(html):
     return m.group(1)
 
 
-def get(url):
-    for attempt in range(3):
+def get(url, opener=None, sleeper=None):
+    """下載網址；遇到可重試錯誤時最多嘗試四次。"""
+    opener = opener or urllib.request.urlopen
+    sleeper = sleeper or time.sleep
+    max_attempts = len(RETRY_DELAYS) + 1
+
+    for attempt in range(max_attempts):
         try:
             req = urllib.request.Request(url, headers={'User-Agent': 'Mozilla/5.0'})
-            with urllib.request.urlopen(req, timeout=30) as r:
+            with opener(req, timeout=30) as r:
                 return r.read()
         except urllib.error.HTTPError as e:
-            if e.code != 429 and e.code < 500 or attempt == 2:
+            retryable = e.code in (408, 429) or 500 <= e.code < 600
+            if e.code == 404 or not retryable or attempt == max_attempts - 1:
                 raise
-            time.sleep(2 * (attempt + 1))
-        except OSError:
-            if attempt == 2:
+            reason = f'HTTP {e.code}'
+        except OSError as e:
+            if attempt == max_attempts - 1:
                 raise
-            time.sleep(2)
+            reason = str(e) or type(e).__name__
+
+        delay = RETRY_DELAYS[attempt]
+        print(
+            f'下載失敗（{reason}），等待 {delay} 秒後重試'
+            f'（第 {attempt + 2} 次，共 {max_attempts} 次）：{url}'
+        )
+        sleeper(delay)
+
+
+def _download_error_detail(error):
+    if isinstance(error, urllib.error.HTTPError):
+        return str(error.code)
+    reason = getattr(error, 'reason', None)
+    return str(reason if reason is not None else error)
+
+
+def _raise_if_incomplete(fatal):
+    if fatal:
+        raise RuntimeError('這些檔案下載失敗（非 404），快取不完整：' + '、'.join(fatal))
 
 
 def crawl(dest, html):
@@ -88,6 +114,9 @@ def crawl(dest, html):
             else:
                 fatal.append(f'{name}（{e.code}）')
             continue
+        except OSError as e:
+            fatal.append(f'{name}（{_download_error_detail(e)}）')
+            continue
 
         with open(asset_path, 'wb') as f:
             f.write(data)
@@ -105,14 +134,19 @@ def crawl(dest, html):
         try:
             data = get(f'{BASE}/{name}')
         except urllib.error.HTTPError as e:
-            missing.append(f'/{name}（{e.code}）')
+            if e.code == 404:
+                missing.append(f'/{name}（404）')
+            else:
+                fatal.append(f'/{name}（{e.code}）')
+            continue
+        except OSError as e:
+            fatal.append(f'/{name}（{_download_error_detail(e)}）')
             continue
         os.makedirs(os.path.dirname(root_path), exist_ok=True)
         with open(root_path, 'wb') as f:
             f.write(data)
 
-    if fatal:
-        raise RuntimeError('這些檔案下載失敗（非 404），快取不完整：' + '、'.join(fatal))
+    _raise_if_incomplete(fatal)
 
     for s in SFX:
         sfx_path = os.path.join(dest, 'sfx', s + '.mp3')
@@ -121,8 +155,15 @@ def crawl(dest, html):
                 sfx_data = get(f'{BASE}/sfx/{s}.mp3')
                 with open(sfx_path, 'wb') as f:
                     f.write(sfx_data)
+            except urllib.error.HTTPError as e:
+                if e.code != 404:
+                    fatal.append(f'sfx/{s}.mp3（{e.code}）')
+            except OSError as e:
+                fatal.append(f'sfx/{s}.mp3（{_download_error_detail(e)}）')
             except Exception:
                 pass
+
+    _raise_if_incomplete(fatal)
 
     if missing:
         print(f"⚠️ 略過 {len(missing)} 個伺服器上不存在的資源 (404):", missing[:6])
