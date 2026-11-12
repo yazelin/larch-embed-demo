@@ -1,0 +1,1 @@
+import{F as n}from"./creatorChallenge-BMCJbOTV.js";const e=n,r={pro:20,free:5};function s(t=Date.now()){return t>=Date.parse(e.startsAt)&&t<Date.parse(e.endsAt)+1e3}function o(){const t=new Date(Date.parse(e.endsAt)+288e5);return`${t.getUTCMonth()+1}/${t.getUTCDate()}`}export{r as L,o as a,s as l};

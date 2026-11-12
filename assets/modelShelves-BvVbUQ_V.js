@@ -1,0 +1,1 @@
+import{P as n}from"./placeables-YWYlXkps.js";const t=["model","people","ride","creature","monster","building","prop","light","nature","game","ember","library"],p={people:"主角與人物"},o=e=>{const r=t.indexOf(e);return r<0?t.length:r},a=n.filter(([e])=>e!=="effect"&&e!=="special").map(([e,r])=>[e,p[e]||r]).sort((e,r)=>o(e[0])-o(r[0]));export{a as D};

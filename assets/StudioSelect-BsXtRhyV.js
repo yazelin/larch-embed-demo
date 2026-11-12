@@ -1,0 +1,1 @@
+import{j as s}from"./react-core-Ci-x9IAP.js";import{S as o}from"./SelectMenu-DJZ8C13_.js";function m({className:t="",...e}){return s.jsx(o,{...e,className:`studio-select ${t}`.trim()})}export{m as S};

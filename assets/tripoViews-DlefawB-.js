@@ -1,0 +1,1 @@
+const r=["front","left","back","right"],a={front:"正面",left:"左側",back:"背面",right:"右側"},e=["image/png","image/jpeg","image/webp"],i=20*1024*1024;function o(t){return r.flatMap(n=>typeof t?.[n]=="string"&&t[n]?[[n,t[n]]]:[])}function s(t){const n=o(t);return t?.front?n.length<2?"多視角至少要兩張（正面再加一個角度）":"":"多視角一定要有正面"}export{a as T,s as a,e as b,r as c,i as d,o as t};

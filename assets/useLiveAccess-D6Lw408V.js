@@ -1,0 +1,1 @@
+import{r as c}from"./react-core-Ci-x9IAP.js";import{l as n}from"./liveRoom-CZ1CwW2A.js";let s=null;function l(){return s||=n("/api/live/access").then(e=>e.access&&e.configured).catch(()=>(s=null,!1)),s}function f(e=!0){const[r,i]=c.useState(!1);return c.useEffect(()=>{if(!e||window.top!==window)return;let t=!0;return l().then(u=>{t&&i(u)}),()=>{t=!1}},[e]),r}export{l,f as u};
